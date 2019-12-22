@@ -1,0 +1,143 @@
+{%extends 'base.html'%}
+{%block content%}
+<div class="container-fluid">
+    <header class="heading">
+        <h1 class="head-h1">TO DO APP</h1>
+        <nav class="navbar"></nav>
+        <br><br><br>
+            {%if form is defined%}
+<div class="form">
+    <form method="POST">
+            {{form.hidden_tag()}}
+            <fieldset>
+                <div class="">ADD NEW ITEM</div>
+                <div>
+                    {{form.title.label() }}
+                    {%if form.title.errors%}
+                    {%for error in form.title.errors%}
+                    <div class="errorMsg">{{error}}</div>
+                    {%endfor%}
+                    {%endif%}
+                    <div class="input">{{form.title()}}</div>
+
+                </div>
+                <div>
+                    {{form.description.label()}}
+                    {%if form.description.error%}
+                    {%for error in form.description.errors%}
+                    <div class="errorMsg">{{error}}</div>
+                    {%endfor%}
+                    {%endif%}
+                    <div class="input">{{form.description()}}</div>
+                </div>
+                <div>
+                    {{form.done.label()}}
+                    {{form.done()}}
+                </div>
+                <div>
+                    <div class="submit-btn">{{form.submit()}}</div>
+                </div>
+            </fieldset>
+        </form>
+</div>
+{%endif%}
+    </header>
+
+
+
+<div class="todotable">
+    <br><br>
+    {%if incomplete_collec is defined%}
+    <div class="head-h2">
+        INCOMPLETE WORK
+    </div>
+    <div class="table">
+    <table>
+        <tr class="">
+        {%for key in incomplete_collec[0]%}
+            {%if key =='_id'%}
+            <th hidden>{{key.capitalize()}}</th>
+            {%else%}
+            <th>{{key.capitalize()}}</th>
+            {%endif%}
+            {%endfor%}
+        </tr>
+
+    {% for todoDict in incomplete_collec %}
+    <tr class="">
+        {%for key in todoDict%}
+        {%if key =='_id'%}
+        <td hidden>{{todoDict[key]}} &ensp; </td>
+        {%else%}
+        <td>{{todoDict[key]}} &ensp;</td>
+        {%endif%}
+        {%endfor%}
+        <td>
+
+            <button name="completeBtn" class='btn-success buttonn' type="submit">
+            <a href="/complete/{{todoDict._id}}">
+                Mark as done
+            </a>
+
+            </button>
+        </td>
+        <td>
+
+            <button name="updateBtn" class='btn-warning buttonn' type="submit">
+            <a href="/update/{{todoDict._id}}">
+                Update
+            </a>
+
+            </button>
+        </td>
+    </tr>
+    {%endfor%}
+    </table>
+    </div>
+    <br><br>
+    <div class="head-h2">COMPLETE WORK</div>
+    <div class="table">
+    <table>
+        <tr class="">
+
+        {%for key in complete_collec[0]%}
+            {%if key =='_id'%}
+            <th hidden>{{key.capitalize()}}</th>
+            {%else%}
+            <th>{{key.capitalize()}}</th>
+            {%endif%}
+        {%endfor%}
+        </tr>
+
+    {% for todoDict in complete_collec %}
+    <tr class="">
+        {%for key in todoDict%}
+        {%if key =='_id'%}
+        <td hidden>{{todoDict[key]}} &ensp; </td>
+        {%else%}
+        <td>{{todoDict[key]}} &ensp; </td>
+        {%endif%}
+        {%endfor%}
+        <td>
+            <button name="deleteBtn" class='btn-danger buttonn' type="submit">
+                <a href="/delete/{{todoDict._id}}">
+                    Delete
+                </a>
+            </button>
+        </td>
+        <td>
+            <button name="updateBtn" class='btn-warning buttonn' type="submit">
+            <a href="/update/{{todoDict._id}}">
+                Update
+            </a>
+
+            </button>
+        </td>
+    </tr>
+    {%endfor%}
+    </table>
+    </div>
+    {%endif%}
+</div>
+</div>
+{%endblock%}
